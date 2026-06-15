@@ -1,26 +1,149 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* Brand colors — restored original */
+  --color-primary: #290c4e;
+  --color-primary-dark: #1d0936;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #f18805;
+  --color-secondary-dark: #d97706;
+  --color-secondary-foreground: #ffffff;
+  --color-accent: #EF4E22;
+  --color-accent-foreground: #ffffff;
+  --color-background: #ffffff;
+  --color-foreground: #1a1a1a;
+  --color-card: #ffffff;
+  --color-card-foreground: #1a1a1a;
+  --color-muted: #f8f9fa;
+  --color-muted-foreground: #6b7280;
+  --color-border: #e5e7eb;
+  --color-input: #e5e7eb;
+  --color-ring: #290c4e;
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #ffffff;
+  --color-success: #16a34a;
+  --color-warning: #f59e0b;
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-full: 9999px;
+
+  --font-bricolage: "Bricolage Grotesque", system-ui, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-bricolage);
+  -webkit-font-smoothing: antialiased;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #290c4e 0%, #f18805 60%, #EF4E22 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-bg {
+  background: linear-gradient(135deg, #290c4e 0%, #f18805 100%);
+}
+
+/* ─── Mission card hover ─── */
+.mission-card {
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+.mission-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(41, 12, 78, 0.14);
+}
+
+/* ─── Card lift ─── */
+.card-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(41, 12, 78, 0.09);
+}
+
+/* ─── Score ring fill animation ─── */
+@keyframes ring-fill {
+  from { stroke-dasharray: 0 251; }
+}
+.ring-animate {
+  animation: ring-fill 1.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation-delay: var(--ring-delay, 0.2s);
+}
+
+/* ─── Score number count-up (CSS shimmer on placeholder) ─── */
+@keyframes score-in {
+  from { opacity: 0; transform: scale(0.6); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.score-pop {
+  animation: score-in 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: var(--score-delay, 0s);
+  opacity: 0;
+}
+
+/* ─── Badge unlock ─── */
+@keyframes badge-unlock {
+  0%   { opacity: 0; transform: scale(0.4) rotate(-12deg); }
+  60%  { transform: scale(1.15) rotate(4deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+.badge-unlock {
+  animation: badge-unlock 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: 1.8s;
+  opacity: 0;
+}
+
+/* ─── Strength item slide in ─── */
+@keyframes item-slide {
+  from { opacity: 0; transform: translateX(-12px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.item-slide {
+  animation: item-slide 0.4s ease forwards;
+  animation-delay: var(--item-delay, 0s);
+  opacity: 0;
+}
+
+/* ─── XP bar fill ─── */
+@keyframes xp-fill {
+  from { width: 0%; }
+  to   { width: var(--xp-pct, 0%); }
+}
+.xp-bar-fill {
+  animation: xp-fill 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation-delay: 0.5s;
+  width: 0%;
+}
+
+/* ─── Confidence meter pulse when rising ─── */
+@keyframes conf-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(241, 136, 5, 0); }
+  50%       { box-shadow: 0 0 0 4px rgba(241, 136, 5, 0.2); }
+}
+.conf-rising {
+  animation: conf-glow 1.5s ease infinite;
+}
+
+/* ─── Streak fire flicker ─── */
+@keyframes flicker {
+  0%, 100% { transform: scaleY(1) scaleX(1); }
+  25% { transform: scaleY(1.04) scaleX(0.97); }
+  75% { transform: scaleY(0.97) scaleX(1.03); }
+}
+.flicker {
+  display: inline-block;
+  animation: flicker 1.8s ease-in-out infinite;
 }
